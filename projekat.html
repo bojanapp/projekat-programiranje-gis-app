@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+ <meta charset="UTF-8">
+ <meta http-equiv="X-UA-Compatible" content="IE=edge">
+ <meta name="viewpport" content="width=device-width, initial-scale=1.0"/>
+ <link
+ rel="stylesheet"
+ href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+ />
+ 
+<title>Projekat-NYC</title>
+<style>
+      html, body {
+        height: 100%;
+        padding: 0;
+        margin: 0;
+      }
+      #map {
+        /* configure the size of the map */
+        width: 60%;
+        height: 60%;
+      }
+    </style>
+</head>
+<body>
+<div id="map"></div>
+</body>
+</html>
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script> 
+var map = L.map('map').setView({lon: -73.953094, lat:40.644468 }, 12);
+
+//add the OpenStreetMap tiles
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  maxZoom: 19,
+  attribution: '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
+}).addTo(map);
+
+var popup = L.popup();
+function onMapClick(e) {
+ popup
+ .setLatLng(e.latlng)
+ .setContent("Tvoja pozicija: " + e.latlng.toString())
+ .openOn(map);
+}
+map.on('click', onMapClick);
+//wms zahtev 
+        
+var wmsPostGisSLoj =L.tileLayer.wms('http://localhost:8080/geoserver/Projekat/wms?', {
+	layers: 'Projekat:nyc_upit',
+   transparent: true,
+     format: 'image/png' 
+});
+var wmsShpSloj =L.tileLayer.wms('http://localhost:8080/geoserver/Projekat/wms?', {
+	layers: '	Projekat:NYC_SHP_FILE',
+   transparent: true,
+     format: 'image/png' 
+});
+var wmsGiffSloj =L.tileLayer.wms('http://localhost:8080/geoserver/Projekat/wms?', {
+	layers: '	Projekat:NYC_GIFF_FILE',
+   transparent: true,
+     format: 'image/png' 
+});
+
+L.control.layers(null, {wmsPostGisSLoj}).addTo(map);
+L.control.layers(null, {wmsShpSloj}).addTo(map);
+L.control.layers(null, {wmsGiffSloj}).addTo(map);
+
+
+
+
+</script>
