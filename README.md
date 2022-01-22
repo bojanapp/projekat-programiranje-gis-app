@@ -1,1 +1,1 @@
-# Projekat iz predmeta programiranje i razgoj GIS aplikacija
+# Projekat iz predmeta programiranje i razvoj GIS aplikacija
